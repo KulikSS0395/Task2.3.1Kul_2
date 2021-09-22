@@ -10,8 +10,12 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
 
+    private final UserDao userDao;
+
     @Autowired
-    private UserDao userDao;
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public void addUser(User user) {
@@ -19,8 +23,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void updateUser(User user) {
-        userDao.updateUser(user);
+    public void updateUser(int id, User userUpdate) {
+        userDao.updateUser(id, userUpdate);
     }
 
     @Override
