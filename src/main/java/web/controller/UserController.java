@@ -42,9 +42,9 @@ public class UserController {
         return "edit";
     }
 
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") int id){
-        userService.updateUser(id, user);
+    @PutMapping("/{id}")
+    public String update(@ModelAttribute("user") User user){
+        userService.updateUser(user);
         return "redirect:/users";
     }
 
