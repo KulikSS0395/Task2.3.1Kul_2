@@ -1,6 +1,9 @@
 package web.dao;
 
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
@@ -20,6 +23,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     @Transactional
     public void addUser(User user) {
+        user.setPassword(passwordEncoder().encode(user.getPassword()));
         entityManager.persist(user);
     }
 
@@ -31,7 +35,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     @Transactional
-    public void removeUser(int id) {
+    public void removeUser(long id) {
         Query query = entityManager.createQuery("delete from User where id = :id ");
         query.setParameter("id", id);
         query.executeUpdate();
@@ -39,7 +43,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     @Transactional
-    public User getUserById(int id) {
+    public User getUserById(long id) {
         return entityManager.find(User.class, id);
     }
 
@@ -50,5 +54,20 @@ public class UserDaoImpl implements UserDao {
         return entityManager.createQuery("select u from User u").getResultList();
     }
 
+    @Override
+    public User getUserByName(String name) {
+        return entityManager.createQuery("select u FROM User u WHERE u.name = :name", User.class)
+                .setParameter("name", name).getSingleResult();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        return entityManager.createQuery("select u FROM User u WHERE u.name = :name", User.class)
+                                    .setParameter("name", username).getSingleResult();
+    }
+
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }

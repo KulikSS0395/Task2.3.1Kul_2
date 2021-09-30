@@ -1,18 +1,17 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import web.model.User;
 import web.service.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -23,54 +22,9 @@ public class UserController {
     }
 
     @GetMapping()
-    public String allUsers(Model model) {
-        model.addAttribute("users", userService.getListUsers());
-        return "users";
-    }
-
-    @GetMapping("/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        return "new";
-    }
-
-    @PostMapping()
-    public String create(@ModelAttribute("user") User user) {
-        userService.addUser(user);
-        return "redirect:/users";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "edit";
-    }
-
-    @PutMapping("/{id}")
-    public String update(@ModelAttribute("user") User user){
-        userService.updateUser(user);
-        return "redirect:/users";
-    }
-
-    @DeleteMapping("/{id}")
-    public String remove(@PathVariable("id") int id) {
-        userService.removeUser(id);
-        return "redirect:/users";
-    }
-
-    @RequestMapping(value = "hello", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model) {
-        List<String> messages = new ArrayList<>();
-        messages.add("Hello!");
-        messages.add("I'm Spring MVC-SECURITY application");
-        messages.add("5.2.0 version by sep'19 ");
-        model.addAttribute("messages", messages);
-        return "hello";
-    }
-
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String loginPage() {
-        return "login";
+    public String getUserPage(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
+        return "user";
     }
 
 }
