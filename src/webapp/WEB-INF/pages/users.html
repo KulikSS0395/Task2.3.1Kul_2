@@ -16,6 +16,7 @@
         <th>Name</th>
         <th>LastName</th>
         <th>E-mail</th>
+        <th>Role</th>
     </tr>
     </thead>
     <tbody th:each="user : ${users}">
@@ -23,6 +24,7 @@
     <td><a th:href="@{user_{name}(name=${user.getName()})}" th:utext="${user.getName()}">user</a></td>
     <td th:utext="${user.getLastName()}"></td>
     <td th:utext="${user.getEmail()}"></td>
+    <td th:utext="${user.getRolesToString()}"></td>
     <td><a th:href="@{users/{id}/edit(id=${user.getId()})}">Edit</a></td>
     <td>
         <form th:method="DELETE" th:action="@{admin/users/{id}(id=${user.getId()})}">

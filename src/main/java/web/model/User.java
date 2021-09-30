@@ -135,6 +135,16 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public String getRolesToString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Role role: roles) {
+            stringBuilder.append(role.getRole());
+            stringBuilder.append(" ");
+        }
+
+        return stringBuilder.toString();
+    }
+
     @Override
     public String toString() {
         return "User{" +
