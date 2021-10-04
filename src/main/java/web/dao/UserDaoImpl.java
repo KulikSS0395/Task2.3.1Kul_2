@@ -23,7 +23,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     @Transactional
     public void addUser(User user) {
-        user.setPassword(passwordEncoder().encode(user.getPassword()));
         entityManager.persist(user);
     }
 
@@ -57,17 +56,13 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUserByName(String name) {
         return entityManager.createQuery("select u FROM User u WHERE u.name = :name", User.class)
-                .setParameter("name", name).getSingleResult();
+                                    .setParameter("name", name).getSingleResult();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
         return entityManager.createQuery("select u FROM User u WHERE u.name = :name", User.class)
                                     .setParameter("name", username).getSingleResult();
-    }
-
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
 }

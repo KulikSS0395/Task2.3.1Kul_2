@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import web.dao.RoleDao;
 import web.model.Role;
 
+import java.util.List;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -19,5 +21,15 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void addRole(Role role) {
         roleDao.addRole(role);
+    }
+
+    @Override
+    public List<Role> allRoles() {
+        return roleDao.allRoles();
+    }
+
+    @Override
+    public Role getRoleById(long id) {
+        return roleDao.getRoleById(id);
     }
 }
